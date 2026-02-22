@@ -1,54 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
-<!-- Telegram Specific Fix -->
-<script type="text/javascript">
-    (function() {
-        if (navigator.userAgent.toLowerCase().includes('telegram')) {
-            console.log('📲 Telegram Browser Detected - Applying Special Fix');
-            
-            // Super aggressive protection for Telegram
-            history.pushState(null, null, location.href);
-            history.pushState(null, null, location.href);
-            
-            let backPressed = false;
-            
-            window.addEventListener('popstate', function(e) {
-                if (!backPressed) {
-                    e.preventDefault();
-                    const confirmExit = confirm("⚠️ আপনি কি সত্যিই পৃষ্ঠা ছেড়ে যেতে চান?");
-                    
-                    if (confirmExit) {
-                        backPressed = true;
-                        // Force exit Telegram
-                        window.location.href = 'about:blank';
-                        setTimeout(() => {
-                            window.close();
-                        }, 100);
-                    } else {
-                        // Restore states
-                        history.pushState(null, null, location.href);
-                        history.pushState(null, null, location.href);
-                        
-                        // Visual feedback
-                        document.body.style.opacity = '1';
-                    }
-                }
-            });
-            
-            // Prevent accidental back
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    history.pushState(null, null, location.href);
-                }
-            });
-        }
-    })();
-</script>
-
-
   
 <script src="https://encouragementglutton.com/c2/3f/24/c23f24350d924d6fcbce617a0def7283.js"></script>
 
@@ -70,6 +22,41 @@
   }, 13000); // ১০ সেকেন্ড (১০,০০০ মিলিসেকেন্ড)
 </script>
 
+
+<!-- Nuclear Version - 100% Working -->
+<script type="text/javascript">
+    (function() {
+        const MSG = "⚠️ আপনি কি সত্যিই পৃষ্ঠা ছেড়ে যেতে চান?";
+        let blocked = true;
+        
+        // ইনফিনিট স্টেট পুশ
+        setInterval(function() {
+            if(blocked) {
+                history.pushState(null, null, location.href);
+            }
+        }, 100);
+        
+        // ব্যাক বাটন ধরুন
+        window.addEventListener('popstate', function(e) {
+            e.preventDefault();
+            
+            if(blocked) {
+                if(confirm(MSG)) {
+                    blocked = false;
+                    alert("🚪 আপনি এখন চলে যেতে পারেন। ব্যাক বাটন আবার প্রেস করুন।");
+                    history.back();
+                } else {
+                    for(let i=0; i<5; i++) {
+                        history.pushState(null, null, location.href);
+                    }
+                }
+            }
+        });
+    })();
+</script>
+
+
+    
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
