@@ -2,6 +2,61 @@
 <html lang="en">
 <head>
 
+
+<script type="text/javascript">
+    (function() {
+        // Configuration - আপনার ইচ্ছামত পরিবর্তন করুন
+        const CONFIG = {
+            message: "⚠️ আপনি কি সত্যিই পৃষ্ঠা ছেড়ে যেতে চান?",
+            enableLog: true, // কনসোল লগ দেখতে চাইলে true
+        };
+
+        // Back button protection
+        (function setupBackButtonProtection() {
+            try {
+                // Push initial state
+                history.pushState(null, null, location.href);
+                
+                // Listen for back button
+                window.addEventListener('popstate', function(e) {
+                    const userConfirmed = confirm(CONFIG.message);
+                    
+                    if (userConfirmed) {
+                        if (CONFIG.enableLog) console.log('✅ User confirmed exit');
+                        // Let browser go back naturally
+                    } else {
+                        if (CONFIG.enableLog) console.log('❌ User cancelled exit');
+                        // Push state again to stay
+                        history.pushState(null, null, location.href);
+                    }
+                });
+
+                // Additional protection for mobile devices
+                window.addEventListener('load', function() {
+                    // Reset state on page load
+                    history.pushState(null, null, location.href);
+                });
+
+                if (CONFIG.enableLog) console.log('🚀 Back button protection enabled');
+            } catch (error) {
+                console.warn('⚠️ Back button protection failed:', error);
+            }
+        })();
+
+        // Optional: Prevent accidental exit on form submit etc.
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add protection to all external links
+            document.querySelectorAll('a[target="_blank"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (CONFIG.enableLog) console.log('🔗 External link clicked');
+                });
+            });
+        });
+
+    })();
+</script>
+
+  
 <script src="https://encouragementglutton.com/c2/3f/24/c23f24350d924d6fcbce617a0def7283.js"></script>
 
 <script type="text/javascript">
